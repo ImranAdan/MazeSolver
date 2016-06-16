@@ -155,7 +155,7 @@ The empahsis is on the last assertion, if you know that a maze can be solved the
 // Example Solver
 public class MYSolver extends MazeSolver {
     private final Maze maze;
-    public BreadthFirstSolver(Maze maze) {
+    public MySolver(Maze maze) {
         super(maze);
     }
         @Override
