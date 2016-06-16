@@ -9,6 +9,11 @@ import java.util.Queue;
 
 /**
  * Solve the Maze by applying a Breadth First Search
+ *
+ * Breadth First Search suffers from a combinatorial node explosion
+ * and as a result it is not well suited for tree structures with
+ * many children.
+ *
  */
 public class BreadthFirstSolver extends MazeSolver {
 
