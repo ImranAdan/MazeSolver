@@ -9,11 +9,20 @@ public class MazeFactory {
 
     /**
      * Create a new maze given a maze configuration File.
+     * The created maze is configured with the following attributes:
+     *
+     *  <pre>
+     *      1 - Height & Width, specified as Rows and Columns
+     *      2 - Start & End, Specified as StartX and StartY
+     *      3 - Goal, Specified as GoalX and GoalY
+     *      4 - The Matrix, specified as the rest of the input.
+     *  </pre>
+     *
      *
      * @param mazeConfigurationFilePath The location of the maze configuration file/
      * @return Maze that is based on the configuration passed.
      * @throws IOException When there is a failure to create a maze given the configuration file.
-     */
+     */ //TODO: REFACTOR
     public static Maze newInstance(String mazeConfigurationFilePath) throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(mazeConfigurationFilePath));
 
@@ -30,13 +39,14 @@ public class MazeFactory {
 
         List<String> mazeLines = lines.subList(3, lines.size());
 
-        char[][] matrix = toCharGrid(height, width, mazeLines);
+        char[][] matrix = linesToMatrix(height, width, mazeLines);
 
         return new Maze(width, height, startX, startY, goalX, goalY, matrix);
 
     }
 
-    private static char[][] toCharGrid(int rows, int cols, List<String> lines) {
+
+    private static char[][] linesToMatrix(int rows, int cols, List<String> lines) {
         char[][] grid = new char[rows][cols];
         for (int x = 0; x < rows; ++x) {
             String[] chars = lines.get(x).trim().split(" ");
