@@ -16,7 +16,7 @@ public class Maze {
 
     public final char[][] matrix;
 
-    public MazeState state;
+    public MazeState state = MazeState.UNSOLVED;;
 
     public Maze(int rows, int columns, int startX, int startY, int goalX, int goalY, char[][] matrix) {
         this.rows = rows;
@@ -26,7 +26,6 @@ public class Maze {
         this.goalX = goalX;
         this.goalY = goalY;
         this.matrix = matrix;
-        state = MazeState.UNSOLVED;
     }
 
 
