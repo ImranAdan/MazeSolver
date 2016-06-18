@@ -1,6 +1,7 @@
 package org.adani.maze.solver.model;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -24,7 +25,7 @@ public class MazeFactory {
      * @throws IOException When there is a failure to create a maze given the configuration file.
      */ //TODO: REFACTOR
     public static Maze newInstance(String mazeConfigurationFilePath) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(mazeConfigurationFilePath));
+        List<String> lines = Files.readAllLines(Paths.get(mazeConfigurationFilePath), Charset.defaultCharset());
 
         String[] goalMeta = lines.get(2).split(" ");
         String[] widthHeightMeta = lines.get(0).split(" ");
