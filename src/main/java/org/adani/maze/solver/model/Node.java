@@ -1,11 +1,10 @@
 package org.adani.maze.solver.model;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
+import java.util.List;
+
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.List;
 
 public class Node {
 
@@ -14,7 +13,7 @@ public class Node {
     public char value;
     public int x;
     public int y;
-
+    // TODO: rename these variable to describe their purpose.
     public int f;
     public int g;
     public int h;
@@ -27,7 +26,6 @@ public class Node {
         this.value = value;
         parent = null;
     }
-
 
     @Override
     public String toString() {
@@ -48,10 +46,7 @@ public class Node {
          * related attributes are not considered during equality testing.
          */
 
-        return new EqualsBuilder().append(x, other.x)
-                .append(y, other.y)
-                .append(value, other.value)
-                .isEquals();
+        return (this.x == other.x && this.y == other.y && this.value == other.value);
 
     }
 
