@@ -82,7 +82,7 @@ OUTPUT: FILE_NAME.maze
 _DONE_
 ```
 
-EMPAHSIS IS ON THE SEARCH ALGORITHMS HOWEVER EXTRA POINTS FOR BEAUTIFICATION.
+EMPHASIS IS ON THE SEARCH ALGORITHMS HOWEVER EXTRA POINTS FOR BEAUTIFICATION.
 
 FOR EVEN BETTER OUTPUT YOU COULD REPLACE ALL NON VALID PATHS WITH ' ' AND
 REPRESENT THE VALID PATH FROM 'S' to 'E' WITH 'X '
@@ -149,7 +149,7 @@ public class MySolverTest {
     }
 }
 ```
-The empahsis is on the last assertion, if you know that a maze can be solved then the assertion should accept _Maze.MazeState.SOLVED_ as the mazes final state else _Maze.MazeState.UNSOLVED_.
+The emphasis is on the last assertion, if you know that a maze can be solved then the assertion should accept _Maze.MazeState.SOLVED_ as the mazes final state else _Maze.MazeState.UNSOLVED_.
 
 ```java
 // Example Solver
