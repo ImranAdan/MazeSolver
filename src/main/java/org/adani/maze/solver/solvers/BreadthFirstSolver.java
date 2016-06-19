@@ -98,6 +98,6 @@ public class BreadthFirstSolver extends MazeSolver {
     }
 
     private boolean isWall(char[][] grid, int x, int y) {
-        return grid[x][y] == '1';
+        return grid[x][y] == MazeConstants.WALL_CHAR;
     }
 }

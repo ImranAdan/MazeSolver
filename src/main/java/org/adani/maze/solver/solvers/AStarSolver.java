@@ -35,8 +35,8 @@ public class AStarSolver extends MazeSolver {
             for (Node n : path)
                 getMaze().matrix[n.x][n.y] = 'X';
 
-            getMaze().matrix[getMaze().startX][getMaze().startY] = 'S';
-            getMaze().matrix[getMaze().goalX][getMaze().goalY] = 'E';
+            getMaze().matrix[getMaze().startX][getMaze().startY] = MazeConstants.START_CHAR;
+            getMaze().matrix[getMaze().goalX][getMaze().goalY] = MazeConstants.GOAL_CHAR;
 
             return true;
 
@@ -91,7 +91,7 @@ public class AStarSolver extends MazeSolver {
             for (Node neighbour : head.neighbour) {
                 boolean isBetterNode;
 
-                if (closedList.contains(neighbour) || getMaze().matrix[neighbour.x][neighbour.y] == '1') {
+                if (closedList.contains(neighbour) || getMaze().matrix[neighbour.x][neighbour.y] == MazeConstants.WALL_CHAR) {
                     continue;
                 }
 

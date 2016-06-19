@@ -8,9 +8,11 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * DFS implementation.
+ *
+ */
 public final class DfsMazeSolver extends MazeSolver {
-
-    private static char WALL = '1';
     /**
      * North, South, West, East Neighbours swapping these affects the branch;
      * We dfs to i.e left first or right first or middle current order
@@ -111,7 +113,7 @@ public final class DfsMazeSolver extends MazeSolver {
                             current.y + adjs[i][1],
                             matrix[current.x + adjs[i][0]][current.y + adjs[i][1]]);
                 
-                if (n.value != WALL) {
+                if (n.value != MazeConstants.WALL_CHAR) {
                     n.parent = current;
                     neighbours.add(n);
                 }
