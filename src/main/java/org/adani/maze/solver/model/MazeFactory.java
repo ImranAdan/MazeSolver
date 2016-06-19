@@ -4,21 +4,22 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class MazeFactory {
 
     /**
      * Create a new maze given a maze configuration File.
      * The created maze is configured with the following attributes:
-     *
-     *  <pre>
+     * <p>
+     * <pre>
      *      1 - Height & Width, specified as Rows and Columns
      *      2 - Start & End, Specified as StartX and StartY
      *      3 - Goal, Specified as GoalX and GoalY
      *      4 - The Matrix, specified as the rest of the input.
      *  </pre>
-     *
      *
      * @param mazeConfigurationFilePath The location of the maze configuration file/
      * @return Maze that is based on the configuration passed.
@@ -42,10 +43,47 @@ public class MazeFactory {
 
         char[][] matrix = linesToMatrix(height, width, mazeLines);
 
-        return new Maze(width, height, startX, startY, goalX, goalY, matrix);
+        Queue<Node> nodeSequence = getSequence(height, width, matrix);
+        return new Maze(width, height, startX, startY, goalX, goalY, matrix, nodeSequence);
 
     }
 
+    private static Queue<Node> getSequence(int rows, int cols, char[][] charArray) {
+
+        Queue<Node> mazeNodeSequence = new LinkedList<>();
+
+        for (int x = 0; x < rows; ++x) {
+            for (int y = 0; y < cols; ++y) {
+
+                Node currentNode = new Node(x, y, charArray[x][y]);
+                List<Node> neighbours = new LinkedList<>();
+
+                //NORTH
+                if (x - 1 >= 0) {
+                    neighbours.add(new Node(x - 1, y, charArray[x - 1][y]));
+                }
+
+                // EAST
+                if (y + 1 < cols) {
+                    neighbours.add(new Node(x, y + 1, charArray[x][y + 1]));
+                }
+
+                // SOUTH
+                if (x + 1 < rows) {
+                    neighbours.add(new Node(x + 1, y, charArray[x + 1][y]));
+                }
+
+                // WEST
+                if (y - 1 >= 0) {
+                    neighbours.add(new Node(x, y - 1, charArray[x][y - 1]));
+                }
+
+                currentNode.neighbour = neighbours;
+                mazeNodeSequence.add(currentNode);
+            }
+        }
+        return mazeNodeSequence;
+    }
 
     private static char[][] linesToMatrix(int rows, int cols, List<String> lines) {
         char[][] grid = new char[rows][cols];

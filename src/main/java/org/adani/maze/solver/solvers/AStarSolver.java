@@ -1,5 +1,6 @@
 package org.adani.maze.solver.solvers;
 
+import org.adani.maze.solver.model.HeuristicFunction;
 import org.adani.maze.solver.model.Maze;
 import org.adani.maze.solver.model.Node;
 
@@ -18,6 +19,10 @@ public class AStarSolver extends MazeSolver {
         path = new LinkedList<>();
         openList = new LinkedList<>();
         closedList = new LinkedList<>();
+    }
+
+    private static void log(String message) {
+        System.out.println(message);
     }
 
     @Override
@@ -41,30 +46,42 @@ public class AStarSolver extends MazeSolver {
     }
 
     private Queue<Node> applyAStarSearch() {
+        Queue<Node> shortTestPath = getShortTestPath();
+        return shortTestPath;
+    }
+
+    /**
+     * Experemential ->
+     * 1 - Build the map tree and then traverse the best path; issue encountered on large trees
+     */
+    private Queue<Node> getShortTestPath() {
+
         path.clear();
         openList.clear();
         closedList.clear();
 
-        openList.add(new Node(getMaze().startX, getMaze().startY, getMaze().matrix[getMaze().startX][getMaze().startY]));
-        Queue<Node> generated = applySearch();
+        Node start = getMaze().nodeSequence.element();
+
+
+        openList.add(start);
+        log("Adding: " + start.toString() + " _TO OPEN_LIST");
+        Queue<Node> generated = applySP(start, new Node(getMaze().goalX, getMaze().goalY, getMaze().matrix[getMaze().goalX][getMaze().goalY]));
         return generated;
+
     }
 
-    private Queue<Node> applySearch() {
+    private Queue<Node> applySP(Node start, Node goal) {
 
-        Node start = new Node(getMaze().startX, getMaze().startY, getMaze().matrix[getMaze().startX][getMaze().startY]);
-        Node goal = new Node(getMaze().goalX, getMaze().goalY, getMaze().matrix[getMaze().goalX][getMaze().goalY]);
 
         while (!openList.isEmpty()) {
             Node head = openList.element();
-            for (Node n : openList) {
-                if (n.f < head.f) {
-                    head = n;
+            for (Node node : openList) {
+                if (node.f < head.f) {
+                    head = node;
                 }
             }
 
-            if (head.x == getMaze().goalX && head.y == getMaze().goalY) // Goal Check
-            {
+            if (head.x == getMaze().goalX && head.y == getMaze().goalY) {
                 return reconstructPath(head);
             }
 
@@ -73,25 +90,94 @@ public class AStarSolver extends MazeSolver {
 
             for (Node neighbour : head.neighbour) {
                 boolean isBetterNode;
+
                 if (closedList.contains(neighbour) || getMaze().matrix[neighbour.x][neighbour.y] == '1') {
                     continue;
                 }
 
 
-                int neighbourDistanceFromStart = Heuristics.getManhattanDistance(neighbour, start);
+                int g = HeuristicFunction.MANHATTAN_DISTANCE.apply(neighbour, start);
                 if (!openList.contains(neighbour)) {
                     openList.add(neighbour);
                     isBetterNode = true;
-                } else if (neighbourDistanceFromStart < Heuristics.getManhattanDistance(neighbour, start)) {
+                } else isBetterNode = g < HeuristicFunction.MANHATTAN_DISTANCE.apply(head, start);
+
+                if (isBetterNode) {
+                    log("IS_BETTER: " + head.toString());
+
+                    neighbour.parent = head;
+                    neighbour.g = g;
+                    neighbour.h = HeuristicFunction.MANHATTAN_DISTANCE.apply(neighbour, goal);
+                    neighbour.f = neighbour.g + neighbour.h;
+                }
+
+                System.out.println(head.toString());
+            }
+        }
+
+        return new LinkedList<>();
+    }
+
+    /*
+        private Queue<Node> applySearch() {
+
+            Node start = new Node(getMaze().startX, getMaze().startY, getMaze().matrix[getMaze().startX][getMaze().startY]);
+            Node goal = new Node(getMaze().goalX, getMaze().goalY, getMaze().matrix[getMaze().goalX][getMaze().goalY]);
+
+            while (!openList.isEmpty()) {
+                Node head = openList.element();
+                for (Node n : openList)
+                {
+                    if (n.f < head.f)
+                    {
+                        head = n;
+                    }
+                }
+
+                if (head.x == getMaze().goalX
+                        && head.y == getMaze().goalY) {
+                    return reconstructPath(head);
+                }
+
+                openList.remove(head);
+                closedList.add(head);
+
+
+                /**
+                 *
+                 * Set the head here?
+                 *
+                 */
+/*
+
+
+            for (Node neighbour : head.neighbour) {
+                boolean isBetterNode;
+                if (closedList.contains(neighbour)
+                        || getMaze().matrix[neighbour.x][neighbour.y] == '1') {
+                    continue;
+                }
+
+
+                int g = HeuristicFunction.MANHATTAN_DISTANCE.apply(neighbour, start);
+                if (!openList.contains(neighbour))
+                {
+                    openList.add(neighbour);
                     isBetterNode = true;
-                } else {
+                }
+                else if (g < HeuristicFunction.MANHATTAN_DISTANCE.apply(head, start))
+                {
+                    isBetterNode = true;
+                }
+                else
+                {
                     isBetterNode = false;
                 }
 
                 if (isBetterNode) {
                     neighbour.parent = head;
-                    neighbour.g = neighbourDistanceFromStart;
-                    neighbour.h = Heuristics.getManhattanDistance(neighbour, goal);
+                    neighbour.g = g;
+                    neighbour.h = HeuristicFunction.MANHATTAN_DISTANCE.apply(neighbour, goal);
                     neighbour.f = neighbour.g + neighbour.h;
                 }
             }
@@ -101,7 +187,7 @@ public class AStarSolver extends MazeSolver {
         return null;
     }
 
-
+*/
     public Queue<Node> getOpenList() {
         return openList;
     }
@@ -109,7 +195,6 @@ public class AStarSolver extends MazeSolver {
     public Queue<Node> getClosedList() {
         return closedList;
     }
-
 
     private Queue<Node> reconstructPath(Node child) {
         while (child.parent != null) {
@@ -122,22 +207,11 @@ public class AStarSolver extends MazeSolver {
         return path;
     }
 
-
     private void reverseQueue() {
         Stack<Node> stack = new Stack<>();
         for (int i = 0; i < path.size(); ++i) {
             stack.add(path.remove());
             path.add(stack.pop());
         }
-    }
-
-    private static class Heuristics {
-
-
-        public static int getManhattanDistance(Node current, Node goal) {
-            return (Math.abs(current.x - goal.x) + Math.abs(current.y - goal.y));
-        }
-
-
     }
 }

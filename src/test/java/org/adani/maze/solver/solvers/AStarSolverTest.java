@@ -22,11 +22,11 @@ public class AStarSolverTest {
             "/example.maze"
     };
 
-    @Test(timeout = 30000L)
+    @Test//(timeout = 30000L)
     @Theory
     public void testSolve(String candidate) throws IOException {
 
-        String mazeFileLocation = this.getClass().getResource(candidate).getFile().substring(1);
+        String mazeFileLocation = this.getClass().getResource(candidate).getFile();
 
         Maze maze = MazeFactory.newInstance(mazeFileLocation);
 

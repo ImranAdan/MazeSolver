@@ -1,23 +1,29 @@
 package org.adani.maze.solver.solvers;
 
+import org.adani.maze.solver.model.Maze;
+import org.adani.maze.solver.model.Node;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.adani.maze.solver.model.Maze;
-import org.adani.maze.solver.model.Node;
-
 public final class DfsMazeSolver extends MazeSolver {
+
     private static char WALL = '1';
+    /**
+     * North, South, West, East Neighbours swapping these affects the branch;
+     * We dfs to i.e left first or right first or middle current order
+     * is in pre-order i.e. left first.
+     */
+
+    private int[][] adjs = {
+            {-1, 0}, {1, 0}, {0, -1}, {0, 1}
+    };
 
     public DfsMazeSolver(Maze maze) {
         super(maze);
     }
-    // north, south, west, est neighbours
-    // swapping these affects the branch we dfs to i.e left first or right first or middle
-    // current order is in pre-order i.e. left first.
-    private int[][] adjs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; 
 
     @Override
     public boolean solve() {
@@ -29,7 +35,7 @@ public final class DfsMazeSolver extends MazeSolver {
 
         Node head = start;
         visited.push(head);
-        setNeighbours(head, maze);
+        setNeighbourNodes(head, maze);
 
         while (!head.equals(goal)) {
             Node child = null;
@@ -47,7 +53,7 @@ public final class DfsMazeSolver extends MazeSolver {
                         return true;
                     }
 
-                    this.setNeighbours(child, maze);
+                    this.setNeighbourNodes(child, maze);
                     head = child;
                     break;
                 }
@@ -83,11 +89,19 @@ public final class DfsMazeSolver extends MazeSolver {
     }
 
     /**
+     * TODO: Refactor;
+     *
+     *
+     *
      * This set the parent of the current node and all of its children node from the maze.
+     * 
+     *
      */
-    void setNeighbours(Node current, Maze maze) {
+    public void setNeighbourNodes(Node current, Maze maze) {
         final char[][] matrix = maze.matrix;
         final List<Node> neighbours = new LinkedList<>();
+
+
         for (int i = 0; i< adjs.length; i++) {
             //User and abuse exception. We dont care to check if a node is at the edge.
             try {
@@ -102,7 +116,16 @@ public final class DfsMazeSolver extends MazeSolver {
                     neighbours.add(n);
                 }
             }
-            catch (ArrayIndexOutOfBoundsException ex) {}
+            catch (ArrayIndexOutOfBoundsException ex) {
+                /**
+                 *
+                 * TODO: Refactor - Should not have an empty catch clause
+                 *
+                 * If you are checking bounds please see:
+                 * @see BreadthFirstSolver withInBounds
+                 *
+                 */
+            }
         }
         current.neighbour = neighbours;
     }

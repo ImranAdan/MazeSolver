@@ -1,20 +1,20 @@
 package org.adani.maze.solver.solvers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-
 import org.adani.maze.solver.model.Maze;
 import org.adani.maze.solver.model.MazeFactory;
 import org.adani.maze.solver.model.Node;
 import org.adani.maze.solver.utils.MazeBeautify;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Theories.class)
 public class DfsMazeSolverTest {
@@ -28,13 +28,7 @@ public class DfsMazeSolverTest {
     public static
     @DataPoints
     String[] candidates = {
-        "/example.maze",
-        "/input.maze"
-        // Wont work ATM with these...Ignoring for now
-//        "/small.maze",
-//        "/medium_input.maze",
-//        "/large_input.maze",
-//        "/unsolved.maze"
+            "/example.maze"
     };
 
     @Test(timeout = 30000L)
@@ -61,7 +55,7 @@ public class DfsMazeSolverTest {
         final Node startNode = new Node(maze.startX, maze.startY, maze.matrix[maze.startX][maze.startY]);
         
         DfsMazeSolver mazeSolver = new DfsMazeSolver(maze);
-        mazeSolver.setNeighbours(startNode, maze);
+        mazeSolver.setNeighbourNodes(startNode, maze);
         assertEquals(2, startNode.neighbour.size());
         assertEquals('0', startNode.neighbour.get(0).value);
     }

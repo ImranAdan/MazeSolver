@@ -90,6 +90,14 @@ public class BreadthFirstSolver extends MazeSolver {
     }
 
     public boolean canMove(char[][] grid, int x, int y) {
-        return !(x < 0 || x >= grid.length || y < 0 || y >= grid.length) && (grid[x][y] != '1');
+        return withInBounds(grid, x, y) && !isWall(grid, x, y);
+    }
+
+    private boolean withInBounds(char[][] grid, int x, int y) {
+        return !(x < 0 || x >= grid.length || y < 0 || y >= grid.length);
+    }
+
+    private boolean isWall(char[][] grid, int x, int y) {
+        return grid[x][y] == '1';
     }
 }
