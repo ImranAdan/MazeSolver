@@ -9,4 +9,5 @@ public final class MazeConstants {
     public static final char PASSAGE_WAY_CHAR = '0';
     public static final char START_CHAR = 'S';
     public static final char GOAL_CHAR = 'E';
+    public static final char PASSED_NODE_CHAR = 'X';
 }
