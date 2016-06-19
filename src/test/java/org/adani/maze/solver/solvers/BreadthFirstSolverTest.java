@@ -29,13 +29,6 @@ public class BreadthFirstSolverTest {
     String[] candidates = {
             "/example.maze",
             "/input.maze"
-
-
-            //TODO: Investigate why the below input cause an explosion
-            //"/small.maze",
-            //"/medium_input.maze",
-            //"/large_input.maze",
-            //"/unsolved.maze"
     };
 
     @Test(timeout = 30000L)
