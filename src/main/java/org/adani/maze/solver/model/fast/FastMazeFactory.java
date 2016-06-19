@@ -1,16 +1,15 @@
 package org.adani.maze.solver.model.fast;
 
-import org.adani.maze.solver.model.Node;
-
-import java.awt.*;
+import java.awt.Point;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.adani.maze.solver.model.Node;
 
 public class FastMazeFactory {
 
@@ -28,7 +27,7 @@ public class FastMazeFactory {
      *  file.
      * */
     public static FastMaze newFastMazeInstance(String mazeConfigurationFilePath) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(mazeConfigurationFilePath), Charset.defaultCharset());
+        List<String> lines = Files.readAllLines(Paths.get(mazeConfigurationFilePath));
 
         String[] goalMeta = lines.get(2).split(" ");
         String[] widthHeightMeta = lines.get(0).split(" ");
